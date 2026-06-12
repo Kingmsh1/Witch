@@ -1,34 +1,18 @@
 #!/bin/bash
 
-echo "[+] Installing Witch..."
+echo "[+] Installing WITCH repository..."
 
-INSTALL_PATH="/usr/bin/witch"
-WORDLIST_PATH="/usr/share/witch/directorywordlistmedium.txt"
+REPO_URL="https://kingmsh1.github.io/Witch/"
 
-mkdir -p /usr/share/witch
+# Add repo list file
+echo "deb [trusted=yes] $REPO_URL ./" \
+| sudo tee /etc/apt/sources.list.d/witch.list > /dev/null
 
-echo "[+] Installing wordlist..."
+echo "[+] Updating package lists..."
+sudo apt update
 
-curl -sSL "https://raw.githubusercontent.com/Kingmsh1/Witch/main/witch-deb/usr/share/witch/directorywordlistmedium.txt" -o "$WORDLIST_PATH"
+echo "[+] Installing witch v1.0.0..."
+sudo apt install -y witch
 
-echo "[+] Installing main binary..."
-
-TMP_FILE="/tmp/witch"
-
-curl -sSL "https://raw.githubusercontent.com/Kingmsh1/Witch/main/witch-deb/usr/bin/witch" -o "$TMP_FILE"
-
-if [[ ! -s "$TMP_FILE" ]]; then
-    echo "[!] Download failed! Binary is empty or missing"
-    exit
-fi
-
-chmod +x "$TMP_FILE"
-mv "$TMP_FILE" "$INSTALL_PATH"
-
-if command -v witch >/dev/null 2>&1; then
-    echo "[+] Witch installed successfully!"
-    echo "[+] Run with: witch"
-else
-    echo "[!] Installation failed! Command not found in PATH"
-    exit 
-fi
+echo "[+] Installation complete!"
+echo "[+] Run: witch --help"
