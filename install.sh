@@ -11,7 +11,7 @@ echo "deb [trusted=yes] $REPO_URL ./" \
 echo "[+] Updating package lists..."
 sudo apt update
 
-echo "[+] Installing witch..."
+echo "[+] Installing witch v1.0.0..."
 sudo apt install -y witch
 
 echo "[+] Installation complete!"
