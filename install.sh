@@ -13,5 +13,8 @@ fi
 
 chmod +x /usr/bin/witch 2>/dev/null || true
 
+cp witch /usr/bin
+chmod +x /usr/bin/witch
+
 echo "[+] Witch installed successfully!"
 echo "[+] Run with: witch"
