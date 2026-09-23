@@ -73,7 +73,7 @@ getResources() {
 createProjectStructure() {
         dateandtime=$(date)
         timestamp=$(date +%y%m%d_%H%M%S)
-        reportdir="report/$ip-$timestamp"
+        reportdir="report/$IP-$timestamp"
         mkdir -p $reportdir
         cd $reportdir
 }
@@ -158,7 +158,7 @@ echo "[+] Attempting FFUF enumeration..."
                                         echo "[+] Results stored in ffuf.txt"
                                 fi
                         echo "[+] Attempting web-based SQLi..."
-                        sqlmap -u "http://$ip" --dbs &> sqlmap.txt
+                        sqlmap -u "http://$IP" --dbs &> sqlmap.txt
                                 if [[ $? -ne 0 ]]; then
                                         echo "[!] SQLi failed! Is the target reachable?"
                                 else
