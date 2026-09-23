@@ -81,7 +81,7 @@ createProjectStructure() {
 runNmapScan() {
         nmap -A --script vulners -T$SPEED $IP > nmap.txt
         if [[ $? -ne 0 ]]; then
-                echo "[!] Nmap scan failed! Is the host reachable?"
+                echo "[!] Nmap scan failed! Is the host reachable? Have you entered input correctly?"
                 exit
         fi
 }
@@ -174,20 +174,31 @@ read -p "Do you have valid credentials? (y/n): " hasCredentials
                                 read -sp "Enter password: " password
                                 echo "[+] Attempting authenticated SMB enumeration..."
                                 smbclient --ip-address=$IP --user=$username%$password &> smbclient.txt
+                                if [[ $? -ne 0 ]]; then
+                                        echo "[!] SMB Client enumeration failed! Is the target reachable?"
+                                else
+                                        echo "[+] Results stored in smbclient.txt"
+                                fi
                                 enum4linux -u $username -p $password -a $IP &> enum4linux.txt
                                 if [[ $? -ne 0 ]]; then
-                                        echo "[!] SMB enumeration failed! Is the target reachable?"
+                                        echo "[!] Enum4Linux SMB enumeration failed! Is the target reachable?"
                                 else
-                                        echo "[+] Results stored in smbclient.txt and enum4linux.txt"
+                                        echo "[+] Results stored in enum4linux.txt"
                                 fi
                         else
                                 echo "[+] Attempting anonymous SMB enumeration..."
                                 smbclient -L //$IP &> smbclient.txt
-                                enum4linux -a $IP &> enum4linux.txt
                                 if [[ $? -ne 0 ]]; then
-                                        echo "[!] SMB enumeration failed! Is the target reachable?"
+                                        echo "[!] SMB Client enumeration failed! Is the target reachable?"
                                 else
-                                        echo "[+] Results stored in smbclient.txt and enum4linux.txt"
+                                        echo "[+] Results stored in smbclient.txt"
+                                fi
+                                enum4linux -a $IP &> enum4linux.txt
+                                
+                                if [[ $? -ne 0 ]]; then
+                                        echo "[!] Enum4Linux SMB enumeration failed! Is the target reachable?"
+                                else
+                                        echo "[+] Results stored in enum4linux.txt"
                                 fi
                         fi
                         smbenumcomplete="True"
